@@ -1,4 +1,8 @@
 .graph {
-  height: 300px;
-  width: 500px;
+  height: 600px;
+  width: 100%;
+}
+
+.form {
+  padding: 10px;
 }
