@@ -1,14 +1,61 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var fs = require('fs');
 
 var app = express();
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+  extended: true,
+  parameterLimit: 1000000
+}));
+
 app.use(bodyParser.json());
 
+app.use(function (req, res, next) {
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', '*');
+
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
+  res.setHeader('Access-Control-Allow-Credentials', true);
+
+  next();
+});
+
 app.post('/send-signals', function(req, res) {
-  var signals = req.body;
-  console.dir(signals);
+  var signals = req.body.signals;
+  var buffers = [];
+
+  for (var i = 0; i < signals.length; i++) {
+    buffers.push(new Buffer(signals[i] + ',', 'base64'));
+  }
+
+  var mainBuffer = Buffer.concat(buffers);
+
+  fs.writeFile('signals.txt', mainBuffer, function(error) {
+    if (error) {
+      throw error;
+    }
+  });
+
+  res.sendStatus(200);
+});
+
+app.get('/get-signals', function(req, res) {
+  // fs.readFile('signals.txt', 'base64', function(error, data) {
+  //   if (error) {
+  //     throw error;
+  //   }
+  //
+  //   var lol = data.toString('utf-8');
+  //   res.send(lol.toString('utf-8'));
+  // });
 });
 
 app.listen(3000);

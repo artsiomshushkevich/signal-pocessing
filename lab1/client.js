@@ -6,6 +6,7 @@
     x: [],
     y: []
   };
+  var polyharmonicGraph;
   
   generateIntervals();
   addNewFormForGraph();
@@ -42,16 +43,20 @@
   
   function saveGraph() {
     $.ajax({
-      
+      type: 'POST',
+      url: 'http://localhost:3000/send-signals',
+      data: {
+        signals: polyharmonicGraph.y
+      }
     }).done(function() {
-      alert('Saved');
+      alert('Saved!');
     });
   }
   
   function drawPolyharmonicGraph() {
     deleteAllTraces('polyharmonic-graph');
     
-    var polyharmonicGraph = {
+    polyharmonicGraph = {
       x: intervals,
       y: []
     };
