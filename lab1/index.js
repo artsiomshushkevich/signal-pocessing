@@ -10,6 +10,8 @@
   generateIntervals();
   addNewFormForGraph();
   
+  $('#save-graph').on('click', saveGraph);
+  
   $('#add-new-graph-but').on('click', addNewFormForGraph);
   
   $('#forms-container').on('click', function(event) {
@@ -38,6 +40,39 @@
     `);
   }
   
+  function saveGraph() {
+    $.ajax({
+      
+    }).done(function() {
+      alert('Saved');
+    });
+  }
+  
+  function drawPolyharmonicGraph() {
+    deleteAllTraces('polyharmonic-graph');
+    
+    var polyharmonicGraph = {
+      x: intervals,
+      y: []
+    };
+    
+    if (arrayOfGraphs.length !== 0) {
+      for (var i = 0; i < intervals.length; i++) {
+        var tempSum = 0;
+
+        for (var j = 0; j < arrayOfGraphs.length; j++) {
+          tempSum += arrayOfGraphs[j].y[i];
+        }
+        
+        polyharmonicGraph.y.push(tempSum);
+      }
+      
+      Plotly.plot('polyharmonic-graph', [polyharmonicGraph], {margin: {t: 0}});
+    } else {
+      Plotly.plot('polyharmonic-graph', [], {margin: {t: 0}});
+    }
+  }
+  
   function deleteGraph(event) {
     var $parent = $(event.target).parent();
     var parentIndex = $parent.index();
@@ -46,13 +81,15 @@
   
     $($parent).remove();
     
-    deleteAllTraces();
+    deleteAllTraces('graph');
     
     Plotly.plot('graph', arrayOfGraphs.slice(0), {margin: {t: 0}});
+    
+    drawPolyharmonicGraph();
   }
                         
   function drawGraph(event) {
-    deleteAllTraces();
+    deleteAllTraces('graph');
     
     var graphIndex = $(event.target).parent().index();
     
@@ -63,15 +100,17 @@
     arrayOfGraphs[graphIndex] = generateGraph(a0, w0, f0);
     
     Plotly.plot('graph', arrayOfGraphs.slice(0), {margin: {t: 0}});
+    
+    drawPolyharmonicGraph();
   }
   
   /*
     Hack for deleting all the traces from graph
   */
-  function deleteAllTraces() { 
+  function deleteAllTraces(graphId) { 
     try {
       while (true) {
-        Plotly.deleteTraces('graph', 0); 
+        Plotly.deleteTraces(graphId, 0); 
       }
     } catch (err) {
       console.log(err);
