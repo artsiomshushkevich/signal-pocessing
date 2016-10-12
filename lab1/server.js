@@ -33,12 +33,12 @@ app.post('/send-signals', function(req, res) {
   var buffers = [];
 
   for (var i = 0; i < signals.length; i++) {
-    buffers.push(new Buffer(signals[i] + ',', 'base64'));
+    buffers.push(new Buffer(signals[i] + ','));
   }
 
   var mainBuffer = Buffer.concat(buffers);
 
-  fs.writeFile('signals.txt', mainBuffer, function(error) {
+  fs.writeFile('signals.bin', mainBuffer, function(error) {
     if (error) {
       throw error;
     }
@@ -48,14 +48,15 @@ app.post('/send-signals', function(req, res) {
 });
 
 app.get('/get-signals', function(req, res) {
-  // fs.readFile('signals.txt', 'base64', function(error, data) {
-  //   if (error) {
-  //     throw error;
-  //   }
-  //
-  //   var lol = data.toString('utf-8');
-  //   res.send(lol.toString('utf-8'));
-  // });
+  fs.readFile('signals.bin', function(error, data) {
+    if (error) {
+      throw error;
+    }
+
+    res.send({
+      signals: data.toString().split(',')
+    });
+  });
 });
 
 app.listen(3000);
