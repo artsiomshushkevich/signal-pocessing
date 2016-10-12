@@ -33,9 +33,8 @@
     $('#forms-container').append(`
       <div class="form">
         <input type="number" id=${"a0" + currentAmountOfGraphs} placeholder="Enter A0..." required>
-        <input type="number" id=${"w0" + currentAmountOfGraphs} placeholder="Enter w0..." required>
-        <input type="number" id=${"a" + currentAmountOfGraphs} placeholder="Enter a for f0..." required>
-        <input type="number" id=${"b" + currentAmountOfGraphs} placeholder="Enter b for f0..." required>
+        <input type="text" id=${"w0" + currentAmountOfGraphs} placeholder="Enter w0..." required>
+        <input type="text" id=${"f0" + currentAmountOfGraphs} placeholder="Enter f0..." required>
         <button class="draw-graph-but">draw</button>
         <button class="delete-graph-but">delete</button>
       </div> 
@@ -101,13 +100,20 @@
     
     var a0 = +$(`${'#a0' + graphIndex}`).val();
     var w0 = +$(`${'#w0' + graphIndex}`).val();
-    var a = +$(`${'#a' + graphIndex}`).val();
-    var b = +$(`${'#b' + graphIndex}`).val();
-    
-    arrayOfGraphs[graphIndex] = generateGraph(a0, w0, a, b);
-    
+    var f0 = +$(`${'#f0' + graphIndex}`).val();
+
+    if (isNaN(w0)) {
+      eval($(`${'#w0' + graphIndex}`).val());
+    }
+
+    if (isNaN(f0)) {
+      eval($(`${'#f0' + graphIndex}`).val());
+    }
+
+    arrayOfGraphs[graphIndex] = generateGraph(a0, w0, f0);
+
     Plotly.plot('graph', arrayOfGraphs.slice(0), {margin: {t: 0}});
-    
+
     drawPolyharmonicGraph();
   }
   
@@ -134,11 +140,11 @@
     }
   }
   
-  function generateGraph(a0, w0, a, b) {
+  function generateGraph(a0, w0, f0) {
     var signals = [];
     
     for (var i = 0; i < tMax; i++) {
-      signals.push(countHarmonicSignal(a0, w0, a, b, intervals[i]));
+      signals.push(countHarmonicSignal(a0, w0, f0, intervals[i]));
     }
     
     return {
@@ -147,7 +153,7 @@
     };
   }
    
-  function countHarmonicSignal(a0, w0, a, b, t) {
-    return a0 * Math.sin(w0 * t + (a * t + b));
+  function countHarmonicSignal(a0, w0, f0, t) {
+    return a0 * Math.sin(w0 * t + f0);
   }
 })();
