@@ -1,5 +1,5 @@
 (function() {
-  var tMax = 1024;
+  var tMax = 8;
   var arrayOfGraphs = [];
   var intervals = [];
   var emptyGraph = {
@@ -17,7 +17,7 @@
   
   $('#forms-container').on('click', function(event) {
     if ($(event.target).hasClass('draw-graph-but')) {
-      drawGraph(event);
+      drawGraphs(event);
     }
     
     if ($(event.target).hasClass('delete-graph-but')) {
@@ -71,7 +71,18 @@
         
         polyharmonicGraph.y.push(tempSum);
       }
+
+      var lol = doFFT(polyharmonicGraph.y, generateWForDirectFFT);
+      var lol1 = doFFT(lol, generateWForReverseFFT).map(function(item) {
+        return item.re / tMax;
+      });
       
+      var kal  = {
+        x: intervals,
+        y: lol1
+      };
+
+      Plotly.plot('lol', [kal], {margin: {t: 0}});
       Plotly.plot('polyharmonic-graph', [polyharmonicGraph], {margin: {t: 0}});
     } else {
       Plotly.plot('polyharmonic-graph', [], {margin: {t: 0}});
@@ -93,7 +104,7 @@
     drawPolyharmonicGraph();
   }
                         
-  function drawGraph(event) {
+  function drawGraphs(event) {
     deleteAllTraces('graph');
     
     var graphIndex = $(event.target).parent().index();
@@ -105,7 +116,7 @@
     if (isNaN(w0)) {
       eval($(`${'#w0' + graphIndex}`).val());
     }
-
+    
     if (isNaN(f0)) {
       eval($(`${'#f0' + graphIndex}`).val());
     }
@@ -156,4 +167,46 @@
   function countHarmonicSignal(a0, w0, f0, t) {
     return a0 * Math.sin(w0 * t + f0);
   }
+
+  function generateWForDirectFFT(k, n) {
+    var arg = -2 * Math.PI * k / n;
+
+    return math.complex(Math.cos(arg), Math.sin(arg));
+  }
+
+  function generateWForReverseFFT(k,n) {
+    var arg = 2 * Math.PI * k / n;
+
+    return math.complex(Math.cos(arg), Math.sin(arg));
+  }
+
+  function doFFT(xArr, generateWCallback) {
+    var xFourierResultArr = [];
+
+    if (xArr.length === 2) {
+      xFourierResultArr[0] = math.add(xArr[0], xArr[1]);
+      xFourierResultArr[1] = math.subtract(xArr[0], xArr[1]);  
+    } else {
+      var xEvenArr = [];
+      var xOddArr = [];
+
+      for (var i = 0; i < xArr.length / 2; i++) {
+        xEvenArr.push(xArr[2 * i]);
+        xOddArr.push(xArr[2 * i + 1]);
+      }
+
+      var xFourierEvenArr = doFFT(xEvenArr, generateWCallback);
+      var xFourierOddArr = doFFT(xOddArr, generateWCallback);
+
+      for (i = 0; i < xArr.length / 2; i++) {
+        xFourierResultArr[i] = math.add(xFourierEvenArr[i], 
+                                        math.multiply(xFourierOddArr[i], generateWCallback(i, xArr.length)));
+        xFourierResultArr[i + xArr.length / 2] = math.subtract(xFourierEvenArr[i], 
+                                                               math.multiply(xFourierOddArr[i], generateWCallback(i, xArr.length))); 
+      }
+
+    }
+    return xFourierResultArr;
+  }
+  
 })();
