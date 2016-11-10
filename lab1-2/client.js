@@ -36,9 +36,9 @@
       <div class="form">
         <label for="${"a0" + currentAmountOfGraphs}">A0: </label>
         <input type="number" id=${"a0" + currentAmountOfGraphs} placeholder="Enter A0...">
-        <label for="${"w0" + currentAmountOfGraphs}">w0: </label>
+        <label for="${"w0" + currentAmountOfGraphs}">omega0: </label>
         <input type="text" id=${"w0" + currentAmountOfGraphs} placeholder="Enter w0...">
-        <label for="${"f0" + currentAmountOfGraphs}">f0: </label>
+        <label for="${"f0" + currentAmountOfGraphs}">phi0: </label>
         <input type="text" id=${"f0" + currentAmountOfGraphs} placeholder="Enter f0...">
         <button class="draw-graph-but">Draw</button>
         <button class="delete-graph-but">Delete</button>
@@ -84,9 +84,19 @@
   function drawResponsesGraphs() {
     deleteAllTraces('frequency-response-graph');
     deleteAllTraces('phase-response-graph');
-    
+    deleteAllTraces('inverse-fft-graph');
+
     var fourierSequence = doFFT(polyharmonicGraph.y, -1);
-      
+    
+    var fourierSequenceAfterInverseFFT = doFFT(fourierSequence, 1);
+
+    var polyharmonicGraphAfterInverseFFT = {
+      x: intervalsForSignals,
+      y: fourierSequenceAfterInverseFFT.map(function(item) {
+        return item.re / tMax;
+      })
+    };
+
     var frequencyResponse = fourierSequence.map(function(item) {
       return math.sqrt(math.pow(item.re, 2) + math.pow(item.im, 2));
     });
@@ -107,6 +117,8 @@
 
     Plotly.plot('frequency-response-graph', [frequencyResponseGraph], {margin: {t: 0}});
     Plotly.plot('phase-response-graph', [phaseResponseGraph], {margin: {t: 0}});
+    Plotly.plot('inverse-fft-graph', [polyharmonicGraphAfterInverseFFT], {margin: {t: 0}});
+
   }
   
   function deleteGraph(event) {
