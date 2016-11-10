@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
@@ -5,14 +6,31 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <button id="add-new-graph-but">new graph</button>
-  <button id="save-graph">Save graph</button>
-  <div id="forms-container" class="forms-container">
-    
+  <div class="non-forms-buttons-container">
+    <button id="add-new-graph-but">New graph</button>
+    <button id="save-graph">Save graph to file</button>
+    <!--<button id="get-graph">Get graph from file</button>-->
   </div>
-  <div id="graph" class="graph"></div>
-  <div id="polyharmonic-graph" class="graph"></div>
-  <div id="lol" class="graph"></div>
+
+  <div id="forms-container" class="forms-container"></div>
+
+  <div class="graphs-container">
+    <h2>Harmonic graphs</h2>
+    <div id="graphs" class="graph"></div>
+  </div>
+  <div class="graphs-container">
+    <h2>Polyharmonic graph</h2>
+    <div id="polyharmonic-graph" class="graph"></div>
+  </div>
+  <div class="graphs-container">
+    <h2>Frequency response for polyharmonic graph</h2>
+    <div id="frequency-response-graph" class="graph"></div>
+  </div>
+  <div class="graphs-container">
+    <h2>Phase response for polyharmonic graph</h2>
+    <div id="phase-response-graph" class="graph"></div>
+  </div>
+
   <script src="./external/jquery-3.1.1.min.js"></script>
   <script src="./external/plotly-latest.min.js"></script>
   <script src="./external/math.js"></script>
