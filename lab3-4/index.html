@@ -7,26 +7,30 @@
     </head>
     <body>
         <div class="equalizer-container">
-            <p>Equalizer</p>
+            <h2>Equalizer</h2>
             <input type="file" id="file-picker"/>
-            <input type="range" id="volume-range" min="0" max="100">
+            <div class="volume-container">
+                <p>Volume</p>
+                <div><input type="range" id="volume-range" min="0" max="100"></div>    
+            </div>
             <button id="play-but">Play</button>
+            <button id="stop-but">Stop</button>
             <div class="equalizer-controls">
-                <input type="range" orient="vertical"/>
-                <input type="range" orient="vertical"/>
-                <input type="range" orient="vertical"/>
-                <input type="range" orient="vertical"/>
-                <input type="range" orient="vertical"/>
-                <input type="range" orient="vertical"/>
-                <input type="range" orient="vertical"/>
-                <input type="range" orient="vertical"/>
-                <input type="range" orient="vertical"/>
-                <input type="range" orient="vertical"/>
+                <p>Balance</p>
+                <input type="range" min="-40" max="40" orient="vertical"/>
+                <input type="range" min="-40" max="40" orient="vertical"/>
+                <input type="range" min="-40" max="40" orient="vertical"/>
+                <input type="range" min="-40" max="40" orient="vertical"/>
+                <input type="range" min="-40" max="40" orient="vertical"/>
+                <input type="range" min="-40" max="40" orient="vertical"/>
+                <input type="range" min="-40" max="40" orient="vertical"/>
+                <input type="range" min="-40" max="40" orient="vertical"/>
+                <input type="range" min="-40" max="40" orient="vertical"/>
+                <input type="range" min="-40" max="40" orient="vertical"/>
             </div> 
-            <!--<audio controls id="player" src="Kazantip.wav"></audio>-->
         </div>
 
-        <script src="jquery-3.1.1.min.js"></script>
+        <script src="../external/jquery-3.1.1.min.js"></script>
         <script src="../external/plotly-latest.min.js"></script>
         <script src="../external/math.js"></script>
         <script src="index.js"></script>

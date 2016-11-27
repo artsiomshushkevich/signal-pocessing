@@ -8,19 +8,31 @@
     color: #2c3e50;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 20px;
-    height: 350px;
+    height: 400px;
     margin: 20px auto;
     padding: 30px;
     text-align: center;
-    width: 430px;
+    width: 620px;
 }
 
-p,
+h2,
 .equalizer-controls {
     margin-bottom: 30px;
 }
 
-input[type=range] {
+.volume-container {
+    display: inline-flex; 
+    align-items: center;
+    font-size: 14px;
+    height: 40px;
+    width: 190px;
+}
+
+.volume-container > p {
+    margin-right: 3px;
+}
+
+.equalizer-controls input[type=range] {
     -webkit-appearance: slider-vertical;
     width: 40px;
 }
