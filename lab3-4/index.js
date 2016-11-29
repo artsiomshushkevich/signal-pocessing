@@ -2,7 +2,7 @@
     let fileReader = new FileReader();
     let context = new AudioContext();
     let gainNode = context.createGain();
-    let source, filters;
+    let source, balanceFilters;
 
     fileReader.onload = (event) => {
         let buffer = event.srcElement.result;
@@ -12,10 +12,10 @@
             source.buffer = audioBuffer;
             source.loop = true;
 
-            filters = createFilters();
+            balanceFilters = createBalanceFilters();
 
-            source.connect(filters[0]);
-            filters[filters.length - 1].connect(gainNode); 
+            source.connect(balanceFilters[0]);
+            balanceFilters[balanceFilters.length - 1].connect(gainNode); 
             gainNode.connect(context.destination);
 
             source.start(0);   
@@ -45,11 +45,11 @@
 
     $('.equalizer-controls input[type=range]').each((index, item) => {
         $(item).on('change', (event) => {
-            filters[index].gain.value = +event.target.value;
+            balanceFilters[index].gain.value = +event.target.value;
         });
     });
 
-    function createFilter(frequency) {
+    function createBalanceFilter(frequency) {
         let filter = context.createBiquadFilter();
             
         filter.type = 'peaking';
@@ -60,16 +60,16 @@
         return filter;
     }
 
-    function createFilters() {
+    function createBalanceFilters() {
         let frequencies = [60, 170, 310, 600, 1000, 3000, 6000, 12000, 14000, 16000];
-        let filters = frequencies.map(createFilter);
+        let balanceFilters = frequencies.map(createBalanceFilter);
 
-        filters.reduce(function (prev, curr) {
+        balanceFilters.reduce(function (prev, curr) {
             prev.connect(curr);
             return curr;
         });
 
-        return filters;
+        return balanceFilters;
     }
 
 })();
