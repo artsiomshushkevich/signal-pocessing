@@ -2,7 +2,7 @@
     let fileReader = new FileReader();
     let context = new AudioContext();
     let gainNode = context.createGain();
-    let source, balanceFilters;
+    let source, balanceFilters, frequencyFilter;
 
     fileReader.onload = (event) => {
         let buffer = event.srcElement.result;
@@ -13,9 +13,11 @@
             source.loop = true;
 
             balanceFilters = createBalanceFilters();
+            frequencyFilter = createFrequencyFilter();
 
             source.connect(balanceFilters[0]);
-            balanceFilters[balanceFilters.length - 1].connect(gainNode); 
+            balanceFilters[balanceFilters.length - 1].connect(frequencyFilter);
+            frequencyFilter.connect(gainNode); 
             gainNode.connect(context.destination);
 
             source.start(0);   
@@ -49,6 +51,26 @@
         });
     });
 
+    $('#radio-family-container').on('click', (event) => {
+        if (event.target.tagName === "INPUT") {
+            frequencyFilter.type = event.target.value;   
+        }
+    });
+
+    $('.filters-controls input[type=range]').on('change', (event) => {
+        frequencyFilter.frequency.value = +event.target.value;
+    });
+
+    function createFrequencyFilter() {
+        let filter = context.createBiquadFilter();
+
+        filter.type = "highpass";
+        filter.frequency.value = 0;
+        filter.frequency.Q = 1;
+
+        return filter
+    }
+
     function createBalanceFilter(frequency) {
         let filter = context.createBiquadFilter();
             
@@ -71,5 +93,4 @@
 
         return balanceFilters;
     }
-
 })();

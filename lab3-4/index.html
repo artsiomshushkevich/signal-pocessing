@@ -17,10 +17,15 @@
             <button id="stop-but">Stop</button>
             <div class="filters-controls">
                 <p>Filters</p>
-                <div class="filters-container">
-                    <input data-description="lowpass" type="range"/>
-                    <input data-description="highpass" type="range"/>
-                    <input data-description="bandpass" type="range"/>
+                <label for="frequency">Frequency:</label>
+                <input id="frequency" type="range" min="0" max="16000" value="0"/>
+                <div id="radio-family-container">
+                    <input id="lowpass" type="radio" name="frequency-name" value="lowpass"/>
+                    <label for="lowpass">Lowpass</label>
+                    <input id="highpass" type="radio" name="frequency-name" value="highpass" checked="checked"/>
+                    <label for="highpass">Highpass</label>
+                    <input id="bandpass" type="radio" name="frequency-name" value="bandpass"/>
+                    <label for="bandpass">Bandpass</label>
                 </div>
             </div>
             <div class="equalizer-controls">

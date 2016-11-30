@@ -31,36 +31,19 @@ h2,
     margin-bottom: 60px;
 }
 
-.volume-container > p {
-    margin-right: 3px;
+.filters-controls label {
+    font-size: 15px;
+    vertical-align: top;
 }
 
-.filters-container {
-    display: flex;
-    justify-content: center;
+#radio-family-container {
+    display: inline-block;
+    font-size: 14px;
+    vertical-align: top;
+    width: 300px;
 }
 
-.filters-container input {
-    position: relative;
-}
-
-.filters-container input::after {
-    bottom: -30px;
-    color: #2c3e50;
-    content: attr(data-description);
-    font-size: 16px;
-    left: -7px;
-    position: absolute;
-    width: 40px;
-}
-
-.filters-container input:nth-child(2) {
-    margin-left: 60px;
-    margin-right: 60px;
-}
-
-.equalizer-controls input,
-.filters-controls input {
+.equalizer-controls input {
     -webkit-appearance: slider-vertical;
     width: 40px;
 }
