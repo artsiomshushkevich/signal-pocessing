@@ -30,6 +30,10 @@ h2,
     vertical-align: top;
 }
 
+.visualizer-container button {
+    vertical-align: top;
+}
+
 h2 {
     margin-top: 0px;
 }

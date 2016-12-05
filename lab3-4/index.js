@@ -5,7 +5,7 @@
     let canvasWidth = $('#visualizer').width();
     let canvasHeight = $('#visualizer').height();
 
-    let source, balanceFilters, frequencyFilter, analyser, requestId;
+    let source, balanceFilters, frequencyFilter, analyser, requestId, signalsForSaving;
 
     fileReader.onload = (event) => {
         let buffer = event.srcElement.result;
@@ -20,7 +20,7 @@
 
             analyser = context.createAnalyser();
             analyser.fftSize = 4096;
-            
+        
             source.connect(balanceFilters[0]);
             balanceFilters[balanceFilters.length - 1].connect(frequencyFilter);
             frequencyFilter.connect(gainNode); 
@@ -36,7 +36,7 @@
     function draw() {
         let canvasContext = $('#visualizer')[0].getContext('2d');
         canvasContext.clearRect(0, 0, canvasWidth, canvasHeight);
-
+     
         let frequencies = new Uint8Array(analyser.frequencyBinCount);
         let times = new Uint8Array(analyser.frequencyBinCount);
         analyser.getByteFrequencyData(frequencies);
@@ -60,6 +60,20 @@
 
         requestId = requestAnimationFrame(draw);
     }
+
+    $('#send-signals').on('click', () => {
+        signalsForSaving = new Float32Array(analyser.frequencyBinCount);
+        analyser.getFloatTimeDomainData(signalsForSaving);
+
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:3000/send-signals',
+            data: {
+                signals: signalsForSaving
+            }
+        }).done(() => alert('Done!'));
+    });
+
 
     $('#smoothing').on('change', (event) => {
         analyser.smoothingTimeConstant = +event.target.value;
