@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>smothing</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div id="actions-container">
+            <input id="averaging" type="radio" name="smoothing-type" value="averaging"/>
+            <label for="averaging">Averaging</label>
+            <input id="median" type="radio" name="smoothing-type" value="median"/>
+            <label for="median">Median</label>
+            <input id="parabolic" type="radio" name="smoothing-type" value="parabolic"/>
+            <label for="parabolic">Parabolic</label>
+            <input id="none" type="radio" name="smoothing-type" value="none" checked="checked"/>
+            <label for="none">None</label>
+            <button id="generate-graph-but">Generate graph</button>
+        </div>
+        <div id="graph"></div>
+
+        <script src="../external/jquery-3.1.1.min.js"></script>
+        <script src="../external/plotly-latest.min.js"></script>
+        <script src="../external/math.js"></script>
+        <script src="index.js"></script>
+    </body>
+</html>
