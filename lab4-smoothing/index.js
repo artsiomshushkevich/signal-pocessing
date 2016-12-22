@@ -1,6 +1,6 @@
 (() => {
     const B1 = 7;
-    const B2 = 1111111167;
+    const B2 = 8879;
     const N = 2048;
     let signals = [];
     let intervals = [];
@@ -66,7 +66,7 @@
         let newSignals = [];
 
         for (let i = 0; i < signals.length; i++) {         
-            let tempXi = 1 / 35 * (-2 * (signals[i - 2] ? signals[i - 2] : 0) + 
+            let tempXi = 1 / 35 * ((-3) * (signals[i - 2] ? signals[i - 2] : 0) + 
                                 12 * (signals[i - 1] ? signals[i - 1] : 0) + 
                                 17 * (signals[i] ? signals[i] : 0) +
                                 12 * (signals[i + 1] ? signals[i + 1] : 0) +   
@@ -80,7 +80,6 @@
 
     function doMedianSmoothing(signals) {
         let newSignals = signals.slice();
-     
         let N = 5;
 
         for (let i = 0; i < signals.length - N; i++) {
